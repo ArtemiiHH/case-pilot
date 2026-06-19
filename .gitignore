@@ -141,3 +141,10 @@ dist
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 .vite/
+
+# Uploaded firm logos
+server/uploads/*
+!server/uploads/.gitkeep
+
+# Prisma generated client
+server/node_modules/.prisma/
