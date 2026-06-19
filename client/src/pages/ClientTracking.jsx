@@ -27,6 +27,7 @@ export default function ClientTracking() {
 
   const firstName          = data.clientName.split(' ')[0]
   const currentStageIndex  = STAGES.findIndex((s) => s.label === data.stage)
+  const stageColor         = STAGES[currentStageIndex]?.color ?? 'blue'
   const latestNote         = data.updates[0]?.note ?? null
 
   return (
@@ -46,7 +47,7 @@ export default function ClientTracking() {
       <main className={styles.main}>
         <p className={styles.greeting}>Case Update for {firstName}</p>
 
-        <p className={styles.currentStage}>{data.stage}</p>
+        <p className={`${styles.currentStage} ${styles[stageColor]}`}>{data.stage}</p>
 
         <p className={styles.lastUpdated}>
           Last updated {relativeTime(data.updatedAt)}

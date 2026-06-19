@@ -4,6 +4,7 @@ import Dashboard from './pages/Dashboard'
 import AddCase from './pages/AddCase'
 import CaseDetail from './pages/CaseDetail'
 import ClientTracking from './pages/ClientTracking'
+import Settings from './pages/Settings'
 
 function App() {
   return (
@@ -15,6 +16,8 @@ function App() {
         <Route path="/add-case"    element={<AddCase />} />
         <Route path="/cases/:id"   element={<CaseDetail />} />
         <Route path="/case/:token" element={<ClientTracking />} />
+        <Route path="/settings"    element={<Settings />} />
+        <Route path="*"            element={<Navigate to="/dashboard" replace />} />
       </Routes>
     </BrowserRouter>
   )

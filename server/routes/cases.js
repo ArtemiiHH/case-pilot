@@ -46,7 +46,7 @@ router.post('/', requireAuth, async (req, res, next) => {
       clientEmail,
       clientFirstName: firstName,
       trackingUrl,
-    }).catch(() => {})
+    }).catch((err) => console.error('Failed to send case-created email:', err))
 
     res.status(201).json(newCase)
   } catch (err) {
@@ -96,7 +96,7 @@ router.patch('/:id', requireAuth, async (req, res, next) => {
       newStage: stage,
       note: note ?? null,
       trackingUrl,
-    }).catch(() => {})
+    }).catch((err) => console.error('Failed to send case-updated email:', err))
 
     res.json(updated)
   } catch (err) {

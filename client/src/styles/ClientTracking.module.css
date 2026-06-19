@@ -40,6 +40,12 @@
   margin-bottom: 8px;
 }
 
+.currentStage.blue   { color: #1d4ed8; }
+.currentStage.amber  { color: #b45309; }
+.currentStage.purple { color: #6d28d9; }
+.currentStage.orange { color: #c2410c; }
+.currentStage.green  { color: #15803d; }
+
 .currentStage {
   font-size: 1.75rem;
   font-weight: 700;

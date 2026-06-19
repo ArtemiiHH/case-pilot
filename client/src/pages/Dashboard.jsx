@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
-import { getCases } from '../lib/api'
+import { getCases, logout } from '../lib/api'
 import { STAGES } from '../lib/stages'
 import { relativeTime, isStale } from '../lib/time'
 import styles from '../styles/Dashboard.module.css'
@@ -17,6 +17,11 @@ export default function Dashboard() {
       .finally(() => setLoading(false))
   }, [navigate])
 
+  async function handleLogout() {
+    await logout().catch(() => {})
+    navigate('/login')
+  }
+
   if (loading) {
     return <div className={styles.loading}>Loading…</div>
   }
@@ -25,7 +30,11 @@ export default function Dashboard() {
     <div className={styles.page}>
       <header className={styles.header}>
         <h1 className={styles.title}>Cases</h1>
-        <Link to="/add-case" className={styles.addBtn}>Add Case</Link>
+        <div className={styles.headerActions}>
+          <Link to="/settings" className={styles.navLink}>Settings</Link>
+          <button onClick={handleLogout} className={styles.navLink}>Logout</button>
+          <Link to="/add-case" className={styles.addBtn}>Add Case</Link>
+        </div>
       </header>
 
       {cases.length === 0 ? (
