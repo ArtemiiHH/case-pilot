@@ -1,14 +1,24 @@
 import { useEffect, useState } from 'react'
-import { useNavigate, Link } from 'react-router-dom'
-import { getCases, logout } from '../lib/api'
+import { useNavigate, useLocation, Link } from 'react-router-dom'
+import { getCases } from '../lib/api'
 import { STAGES } from '../lib/stages'
 import { relativeTime, isStale } from '../lib/time'
+import DashboardLayout from '../components/DashboardLayout'
 import styles from '../styles/Dashboard.module.css'
+
+const RESOLVED_STAGE = 'Resolved / Closed'
+
+function filterFromPath(pathname) {
+  if (pathname.endsWith('/active'))   return 'active'
+  if (pathname.endsWith('/resolved')) return 'resolved'
+  return 'all'
+}
 
 export default function Dashboard() {
   const [cases,   setCases]   = useState([])
   const [loading, setLoading] = useState(true)
   const navigate = useNavigate()
+  const { pathname } = useLocation()
 
   useEffect(() => {
     getCases()
@@ -17,28 +27,19 @@ export default function Dashboard() {
       .finally(() => setLoading(false))
   }, [navigate])
 
-  async function handleLogout() {
-    await logout().catch(() => {})
-    navigate('/login')
-  }
-
-  if (loading) {
-    return <div className={styles.loading}>Loading…</div>
-  }
+  const filter = filterFromPath(pathname)
+  const visibleCases = cases.filter((c) => {
+    if (filter === 'active')   return c.stage !== RESOLVED_STAGE
+    if (filter === 'resolved') return c.stage === RESOLVED_STAGE
+    return true
+  })
 
   return (
-    <div className={styles.page}>
-      <header className={styles.header}>
-        <h1 className={styles.title}>Cases</h1>
-        <div className={styles.headerActions}>
-          <Link to="/settings" className={styles.navLink}>Settings</Link>
-          <button onClick={handleLogout} className={styles.navLink}>Logout</button>
-          <Link to="/add-case" className={styles.addBtn}>Add Case</Link>
-        </div>
-      </header>
-
-      {cases.length === 0 ? (
-        <EmptyState />
+    <DashboardLayout>
+      {loading ? (
+        <div className={styles.loading}>Loading…</div>
+      ) : visibleCases.length === 0 ? (
+        <EmptyState filter={filter} hasAnyCases={cases.length > 0} />
       ) : (
         <table className={styles.table}>
           <thead>
@@ -50,7 +51,7 @@ export default function Dashboard() {
             </tr>
           </thead>
           <tbody>
-            {cases.map((c) => (
+            {visibleCases.map((c) => (
               <tr
                 key={c.id}
                 className={isStale(c.updatedAt) ? styles.stale : undefined}
@@ -65,7 +66,7 @@ export default function Dashboard() {
           </tbody>
         </table>
       )}
-    </div>
+    </DashboardLayout>
   )
 }
 
@@ -77,7 +78,18 @@ function StagePill({ stage }) {
   )
 }
 
-function EmptyState() {
+function EmptyState({ filter, hasAnyCases }) {
+  if (filter !== 'all' && hasAnyCases) {
+    return (
+      <div className={styles.empty}>
+        <p className={styles.emptyText}>
+          {filter === 'active' ? 'No active cases.' : 'No resolved cases yet.'}
+        </p>
+        <Link to="/dashboard" className={styles.addBtn}>View all cases</Link>
+      </div>
+    )
+  }
+
   return (
     <div className={styles.empty}>
       <p className={styles.emptyText}>No cases yet.</p>

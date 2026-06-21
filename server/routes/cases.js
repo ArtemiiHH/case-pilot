@@ -10,7 +10,7 @@ router.get('/', requireAuth, async (req, res, next) => {
   try {
     const cases = await prisma.case.findMany({
       where: { firmId: req.user.id },
-      orderBy: { updatedAt: 'desc' },
+      orderBy: { updatedAt: 'asc' },
     })
     res.json(cases)
   } catch (err) {
