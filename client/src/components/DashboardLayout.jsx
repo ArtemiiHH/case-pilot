@@ -24,11 +24,7 @@ export default function DashboardLayout({ children }) {
     <div className={styles.shell}>
       <header className={styles.header}>
         <div className={styles.brand}>
-          {firm?.logoUrl ? (
-            <img src={firm.logoUrl} alt={firm.name} className={styles.logo} />
-          ) : (
-            <span className={styles.logoPlaceholder}>{firm?.name ?? 'Case Pilot'}</span>
-          )}
+          <span className={styles.logoPlaceholder}>CasePilot</span>
         </div>
         <div className={styles.headerActions}>
           <Link to="/settings" className={styles.navLink}>Settings</Link>
@@ -42,7 +38,14 @@ export default function DashboardLayout({ children }) {
           <NavLink to="/dashboard" end className={sideLinkClass}>All Cases</NavLink>
           <NavLink to="/dashboard/active" className={sideLinkClass}>Active Cases</NavLink>
           <NavLink to="/dashboard/resolved" className={sideLinkClass}>Resolved</NavLink>
-          <Link to="/settings" className={styles.sideLinkBottom}>Settings</Link>
+          <Link to="/settings" className={styles.sideLinkBottom}>
+            {firm?.logoUrl ? (
+              <img src={firm.logoUrl} alt={firm.name} className={styles.sideLogo} />
+            ) : (
+              <span className={styles.sideLogoPlaceholder}>{firm?.name?.[0] ?? 'F'}</span>
+            )}
+            <span>Settings</span>
+          </Link>
         </nav>
 
         <main className={styles.main}>{children}</main>

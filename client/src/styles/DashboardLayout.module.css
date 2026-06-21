@@ -118,6 +118,9 @@
 
 .sideLinkBottom {
   margin-top: auto;
+  display: flex;
+  align-items: center;
+  gap: 10px;
   font-size: 0.9rem;
   color: #6b7280;
   padding: 10px 12px;
@@ -129,6 +132,27 @@
 
 .sideLinkBottom:hover {
   color: #111;
+}
+
+.sideLogo {
+  height: 24px;
+  width: 24px;
+  border-radius: 6px;
+  object-fit: cover;
+  display: block;
+}
+
+.sideLogoPlaceholder {
+  height: 24px;
+  width: 24px;
+  border-radius: 6px;
+  background: #f3f4f6;
+  color: #111;
+  font-size: 0.75rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .main {
