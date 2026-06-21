@@ -32,52 +32,55 @@ export default function ClientTracking() {
 
   return (
     <div className={styles.page}>
-      <header className={styles.header}>
-        {data.firm.logoUrl ? (
-          <img
-            src={data.firm.logoUrl}
-            alt={data.firm.name}
-            className={styles.logo}
-          />
-        ) : (
+      <div className={styles.document}>
+        <header className={styles.docHeader}>
+          {data.firm.logoUrl ? (
+            <img
+              src={data.firm.logoUrl}
+              alt={data.firm.name}
+              className={styles.logo}
+            />
+          ) : (
+            <div className={styles.logoPlaceholder}>{data.firm.name[0]}</div>
+          )}
           <span className={styles.firmName}>{data.firm.name}</span>
-        )}
-      </header>
+        </header>
 
-      <main className={styles.main}>
-        <p className={styles.greeting}>Case Update for {firstName}</p>
+        <main className={styles.main}>
+          <p className={styles.greeting}>Case Update for {firstName}</p>
 
-        <p className={`${styles.currentStage} ${styles[stageColor]}`}>{data.stage}</p>
+          <p className={`${styles.currentStage} ${styles[stageColor]}`}>{data.stage}</p>
 
-        <p className={styles.lastUpdated}>
-          Last updated {relativeTime(data.updatedAt)}
-        </p>
+          <p className={styles.lastUpdated}>
+            Last updated {relativeTime(data.updatedAt)}
+          </p>
 
-        {latestNote && (
-          <div className={styles.noteBox}>
-            <p className={styles.noteText}>{latestNote}</p>
-          </div>
-        )}
+          {latestNote && (
+            <div className={styles.noteBox}>
+              <p className={styles.noteText}>{latestNote}</p>
+            </div>
+          )}
 
-        <StepBar currentIndex={currentStageIndex} />
+          <StepBar currentIndex={currentStageIndex} />
 
-        {data.updates.length > 0 && (
-          <section className={styles.history}>
-            <h2 className={styles.historyLabel}>Update History</h2>
-            <ol className={styles.timeline}>
-              {data.updates.map((u) => (
-                <li key={u.id} className={styles.timelineItem}>
-                  <div className={styles.timelineTop}>
-                    <span className={styles.timelineStage}>{u.stage}</span>
-                    <span className={styles.timelineTime}>{relativeTime(u.createdAt)}</span>
-                  </div>
-                  {u.note && <p className={styles.timelineNote}>{u.note}</p>}
-                </li>
-              ))}
-            </ol>
-          </section>
-        )}
-      </main>
+          {data.updates.length > 0 && (
+            <section className={styles.history}>
+              <h2 className={styles.historyLabel}>Update History</h2>
+              <ol className={styles.timeline}>
+                {data.updates.map((u) => (
+                  <li key={u.id} className={styles.timelineItem}>
+                    <div className={styles.timelineTop}>
+                      <span className={styles.timelineStage}>{u.stage}</span>
+                      <span className={styles.timelineTime}>{relativeTime(u.createdAt)}</span>
+                    </div>
+                    {u.note && <p className={styles.timelineNote}>{u.note}</p>}
+                  </li>
+                ))}
+              </ol>
+            </section>
+          )}
+        </main>
+      </div>
     </div>
   )
 }
