@@ -104,4 +104,20 @@ router.patch('/:id', requireAuth, async (req, res, next) => {
   }
 })
 
+router.delete('/:id', requireAuth, async (req, res, next) => {
+  try {
+    const existing = await prisma.case.findUnique({ where: { id: req.params.id } })
+    if (!existing || existing.firmId !== req.user.id) {
+      return res.status(404).json({ error: 'Not found' })
+    }
+
+    await prisma.update.deleteMany({ where: { caseId: req.params.id } })
+    await prisma.case.delete({ where: { id: req.params.id } })
+
+    res.status(204).end()
+  } catch (err) {
+    next(err)
+  }
+})
+
 export default router

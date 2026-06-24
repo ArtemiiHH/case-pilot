@@ -103,7 +103,7 @@ export default function Settings() {
       <h1 className={styles.heading}>Settings</h1>
 
       <section className={styles.card}>
-        <h2 className={styles.sectionLabel}>Firm Details</h2>
+        <h2 className={styles.sectionLabel}>Your Firm Details</h2>
         <form onSubmit={handleSaveDetails} className={styles.form}>
           <label className={styles.fieldLabel}>
             Firm name
@@ -137,6 +137,8 @@ export default function Settings() {
           </label>
 
           {detailsError && <p className={styles.error}>{detailsError}</p>}
+
+          <p className={styles.hint}>This information will be displayed on the tracking page your clients receive.</p>
 
           <div className={styles.formFooter}>
             <button type="submit" className={styles.btn} disabled={savingDetails}>
