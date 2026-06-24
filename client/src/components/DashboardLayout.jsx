@@ -27,7 +27,6 @@ export default function DashboardLayout({ children }) {
           <span className={styles.logoPlaceholder}>CasePilot</span>
         </div>
         <div className={styles.headerActions}>
-          <Link to="/settings" className={styles.navLink}>Settings</Link>
           <button onClick={handleLogout} className={styles.navLink}>Logout</button>
           <Link to="/add-case" className={styles.addBtn}>Add Case</Link>
         </div>
