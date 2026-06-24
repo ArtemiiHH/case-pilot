@@ -11,13 +11,15 @@ async function request(method, path, body) {
     e.status = res.status
     throw e
   }
+  if (res.status === 204) return null
   return res.json()
 }
 
 export const api = {
-  get:   (path)       => request('GET',   path),
-  post:  (path, body) => request('POST',  path, body),
-  patch: (path, body) => request('PATCH', path, body),
+  get:    (path)       => request('GET',    path),
+  post:   (path, body) => request('POST',   path, body),
+  patch:  (path, body) => request('PATCH',  path, body),
+  delete: (path)       => request('DELETE', path),
 }
 
 export const getMe      = ()           => api.get('/auth/me')
@@ -27,6 +29,7 @@ export const getCases   = ()           => api.get('/cases')
 export const getCase    = (id)         => api.get(`/cases/${id}`)
 export const createCase = (data)       => api.post('/cases', data)
 export const updateCase = (id, data)   => api.patch(`/cases/${id}`, data)
+export const deleteCase = (id)         => api.delete(`/cases/${id}`)
 export const getClientCase = (token)   => api.get(`/case/${token}`)
 export const saveSettings  = (form)    => request('PATCH', '/firms/settings', form)
 export const changePassword = (data)   => api.patch('/firms/password', data)
