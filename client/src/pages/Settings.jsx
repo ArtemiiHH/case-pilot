@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { getMe, saveSettings, changePassword } from '../lib/api'
 import Toast from '../components/Toast'
@@ -8,6 +8,7 @@ const MAX_LOGO_BYTES = 2 * 1024 * 1024
 
 export default function Settings() {
   const navigate = useNavigate()
+  const logoInputRef = useRef(null)
   const [firm,    setFirm]    = useState(null)
   const [loading, setLoading] = useState(true)
   const [toast,   setToast]   = useState('')
@@ -118,22 +119,38 @@ export default function Settings() {
 
           <label className={styles.fieldLabel}>
             Logo
-            <div className={styles.logoRow}>
-              {(logoPreview || firm.logoUrl) && (
-                <img
-                  src={logoPreview || firm.logoUrl}
-                  alt="Firm logo"
-                  className={styles.logoPreview}
+            <div className={styles.logoUpload}>
+              <div className={styles.logoPreviewWrap}>
+                {(logoPreview || firm.logoUrl) ? (
+                  <img
+                    src={logoPreview || firm.logoUrl}
+                    alt="Firm logo"
+                    className={styles.logoPreview}
+                  />
+                ) : (
+                  <span className={styles.logoPlaceholder}>No logo</span>
+                )}
+              </div>
+              <div className={styles.logoUploadControls}>
+                <button
+                  type="button"
+                  className={styles.uploadBtn}
+                  onClick={() => logoInputRef.current?.click()}
+                >
+                  {logoFile || firm.logoUrl ? 'Change logo' : 'Upload logo'}
+                </button>
+                <input
+                  ref={logoInputRef}
+                  type="file"
+                  accept="image/png,image/jpeg"
+                  onChange={handleLogoChange}
+                  className={styles.hiddenFileInput}
                 />
-              )}
-              <input
-                type="file"
-                accept="image/png,image/jpeg"
-                onChange={handleLogoChange}
-                className={styles.fileInput}
-              />
+                <span className={styles.hint}>
+                  {logoFile ? logoFile.name : 'PNG or JPG, max 2MB'}
+                </span>
+              </div>
             </div>
-            <span className={styles.hint}>PNG or JPG, max 2MB</span>
           </label>
 
           {detailsError && <p className={styles.error}>{detailsError}</p>}

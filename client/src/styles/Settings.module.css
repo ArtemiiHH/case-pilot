@@ -70,25 +70,69 @@
   border-color: #111;
 }
 
-.logoRow {
+.logoUpload {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 16px;
+  padding: 12px 14px;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  background: #fafafa;
 }
 
-.logoPreview {
-  width: 48px;
-  height: 48px;
-  border-radius: 8px;
+.logoPreviewWrap {
+  width: 56px;
+  height: 56px;
+  border-radius: 10px;
   border: 1px solid #e5e7eb;
-  object-fit: contain;
-  background: #f9fafb;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
   flex-shrink: 0;
 }
 
-.fileInput {
-  font-size: 0.85rem;
-  color: #374151;
+.logoPreview {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.logoPlaceholder {
+  font-size: 0.65rem;
+  font-weight: 500;
+  color: #9ca3af;
+  text-align: center;
+}
+
+.logoUploadControls {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  min-width: 0;
+}
+
+.uploadBtn {
+  background: #fff;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  padding: 7px 14px;
+  font-size: 0.825rem;
+  font-weight: 500;
+  color: #111;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.uploadBtn:hover {
+  border-color: #111;
+  background: #f3f4f6;
+}
+
+.hiddenFileInput {
+  display: none;
 }
 
 .hint {
@@ -146,7 +190,7 @@
     padding: 20px 16px;
   }
 
-  .logoRow {
+  .logoUpload {
     flex-wrap: wrap;
   }
 }
