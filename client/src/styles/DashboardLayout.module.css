@@ -159,7 +159,7 @@
   flex: 1;
   margin-left: 220px;
   min-height: calc(100vh - 64px);
-  padding: 32px;
+  padding: 32px 56px;
 }
 
 /* Mobile */
