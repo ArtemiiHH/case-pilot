@@ -10,12 +10,12 @@
   top: 0;
   left: 0;
   right: 0;
-  height: 64px;
+  height: 80px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  padding: 0 24px;
+  padding: 0 40px;
   background: #fff;
   border-bottom: 1px solid #e5e7eb;
   z-index: 50;
@@ -33,7 +33,7 @@
 }
 
 .logoPlaceholder {
-  font-family: 'Instrument Serif', serif;
+  font-family: "Instrument Serif", serif;
   font-size: 1.7rem;
   font-weight: 400;
   color: #111;
@@ -103,7 +103,9 @@
   color: #6b7280;
   padding: 10px 12px;
   border-radius: 8px;
-  transition: background 0.15s, color 0.15s;
+  transition:
+    background 0.15s,
+    color 0.15s;
 }
 
 .sideLink:hover {
