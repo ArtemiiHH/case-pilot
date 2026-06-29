@@ -1,22 +1,44 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { getMe } from "./lib/api";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import AddCase from "./pages/AddCase";
 import CaseDetail from "./pages/CaseDetail";
 import ClientTracking from "./pages/ClientTracking";
 import Settings from "./pages/Settings";
-import ProtectedRoute from "./components/ProtectedRoute";
+
+function ProtectedRoute({ authed, children }) {
+  if (!authed) return <Navigate to="/login" replace />;
+  return children;
+}
 
 function App() {
+  const [authed, setAuthed] = useState(null); // null = checking, true/false = resolved
+
+  useEffect(() => {
+    getMe()
+      .then(() => setAuthed(true))
+      .catch(() => setAuthed(false));
+  }, []);
+
+  if (authed === null) return null;
+
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Navigate to="/dashboard" replace />} />
-        <Route path="/login" element={<Login />} />
+        <Route
+          path="/"
+          element={<Navigate to={authed ? "/dashboard" : "/login"} replace />}
+        />
+        <Route
+          path="/login"
+          element={authed ? <Navigate to="/dashboard" replace /> : <Login />}
+        />
         <Route
           path="/dashboard"
           element={
-            <ProtectedRoute>
+            <ProtectedRoute authed={authed}>
               <Dashboard />
             </ProtectedRoute>
           }
@@ -24,7 +46,7 @@ function App() {
         <Route
           path="/dashboard/active"
           element={
-            <ProtectedRoute>
+            <ProtectedRoute authed={authed}>
               <Dashboard />
             </ProtectedRoute>
           }
@@ -32,7 +54,7 @@ function App() {
         <Route
           path="/dashboard/resolved"
           element={
-            <ProtectedRoute>
+            <ProtectedRoute authed={authed}>
               <Dashboard />
             </ProtectedRoute>
           }
@@ -40,7 +62,7 @@ function App() {
         <Route
           path="/add-case"
           element={
-            <ProtectedRoute>
+            <ProtectedRoute authed={authed}>
               <AddCase />
             </ProtectedRoute>
           }
@@ -48,7 +70,7 @@ function App() {
         <Route
           path="/cases/:id"
           element={
-            <ProtectedRoute>
+            <ProtectedRoute authed={authed}>
               <CaseDetail />
             </ProtectedRoute>
           }
@@ -57,12 +79,15 @@ function App() {
         <Route
           path="/settings"
           element={
-            <ProtectedRoute>
+            <ProtectedRoute authed={authed}>
               <Settings />
             </ProtectedRoute>
           }
         />
-        <Route path="*" element={<Navigate to="/dashboard" replace />} />
+        <Route
+          path="*"
+          element={<Navigate to={authed ? "/dashboard" : "/login"} replace />}
+        />
       </Routes>
     </BrowserRouter>
   );
