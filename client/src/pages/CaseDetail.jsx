@@ -81,6 +81,7 @@ export default function CaseDetail() {
       <header className={styles.header}>
         <div>
           <h1 className={styles.clientName}>{caseData.clientName}</h1>
+          <p className={styles.clientEmail}>{caseData.clientEmail}</p>
           <span className={styles.caseType}>{caseData.caseType}</span>
         </div>
       </header>

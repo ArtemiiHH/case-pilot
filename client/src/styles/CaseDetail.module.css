@@ -29,6 +29,12 @@
   margin-bottom: 4px;
 }
 
+.clientEmail {
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin-bottom: 6px;
+}
+
 .caseType {
   font-size: 0.875rem;
   color: #6b7280;
