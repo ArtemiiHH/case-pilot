@@ -1,6 +1,5 @@
-import { useEffect, useState } from "react";
-import { Link, NavLink, useNavigate } from "react-router-dom";
-import { getMe, logout } from "../lib/api";
+import { Link, NavLink } from "react-router-dom";
+import { useAuth } from "../AuthContext";
 import styles from "../styles/DashboardLayout.module.css";
 
 function sideLinkClass({ isActive }) {
@@ -8,38 +7,7 @@ function sideLinkClass({ isActive }) {
 }
 
 export default function DashboardLayout({ children }) {
-  const [firm, setFirm] = useState(null);
-  const [status, setStatus] = useState("loading"); // 'loading' | 'ok' | 'unauthenticated'
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    let cancelled = false;
-    getMe()
-      .then((data) => {
-        if (cancelled) return;
-        setFirm(data);
-        setStatus("ok");
-      })
-      .catch(() => {
-        if (cancelled) return;
-        setStatus("unauthenticated");
-      });
-    return () => {
-      cancelled = true;
-    };
-  }, []);
-
-  useEffect(() => {
-    if (status === "unauthenticated") navigate("/login", { replace: true });
-  }, [status, navigate]);
-
-  async function handleLogout() {
-    await logout().catch(() => {});
-    setStatus("unauthenticated");
-  }
-
-  if (status === "loading") return null; // or a spinner
-  if (status !== "ok") return null; // redirect effect above will fire
+  const { firm, logout } = useAuth();
 
   return (
     <div className={styles.shell}>
@@ -48,7 +16,7 @@ export default function DashboardLayout({ children }) {
           <span className={styles.logoPlaceholder}>CasePilot</span>
         </div>
         <div className={styles.headerActions}>
-          <button onClick={handleLogout} className={styles.navLink}>
+          <button onClick={logout} className={styles.navLink}>
             Logout
           </button>
           <Link to="/add-case" className={styles.addBtn}>

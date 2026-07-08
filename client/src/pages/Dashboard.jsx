@@ -5,6 +5,7 @@ import { STAGES } from "../lib/stages";
 import { relativeTime, isStale } from "../lib/time";
 import DashboardLayout from "../components/DashboardLayout";
 import Toast from "../components/Toast";
+import { useAuth } from "../AuthContext";
 import styles from "../styles/Dashboard.module.css";
 
 const RESOLVED_STAGE = "Resolved / Closed";
@@ -23,15 +24,16 @@ export default function Dashboard() {
   const [toast, setToast] = useState("");
   const navigate = useNavigate();
   const { pathname } = useLocation();
+  const { logout } = useAuth();
 
   useEffect(() => {
     getCases()
       .then(setCases)
       .catch((err) => {
-        if (err.status === 401) navigate("/login");
+        if (err.status === 401) logout();
       })
       .finally(() => setLoading(false));
-  }, [navigate]);
+  }, [logout]);
 
   const filter = filterFromPath(pathname);
   const visibleCases = cases.filter((c) => {
