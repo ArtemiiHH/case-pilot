@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../AuthContext";
 import { login } from "../lib/api";
 import styles from "../styles/Login.module.css";
 
@@ -9,6 +10,7 @@ export default function Login() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const { refresh } = useAuth();
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -16,6 +18,7 @@ export default function Login() {
     setLoading(true);
     try {
       await login(email, password);
+      await refresh();
       navigate("/dashboard");
     } catch {
       setError("Invalid email or password.");
